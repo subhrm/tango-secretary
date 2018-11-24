@@ -239,22 +239,25 @@ app.post('/gkCompleted/:categoryId', function (req, res) {
     } else {
       context = 'Bhubaneswar'
     }
-    token = db.getGkQuestionToken(speechResult, context, 2);
-    console.log(token);
-    console.log('Sleep Start');
+    // token = db.getGkQuestionToken(speechResult, context, 2);
+    // console.log(token);
+    // console.log('Sleep Start');
     let answer= "";
-      db.getAnswerDirectly(speechResult, context, twiml, 2).then(res => {
-        answer = res;
-        console.log("Answer - ",answer);
-        sayAnswer(answer);
+      db.getAnswerDirectly(speechResult, context, 2).then(res => {
+        // answer = res;
+        console.log(res);
+        res.say('working');
+        res.redirect('/gkDisconnect/' + categoryId);
       });
     
-
     // twiml.play({
     //   loop: 1
     // }, 'https://api.twilio.com/cowbell.mp3');
+    
+
+    // let answer = db.getAnswer(token);
     // twiml.say(answer);
-    // twiml.pause({length:15});
+    // console.log("answer: "+answer);
     // twiml.say('Woke Up');
     // twiml.pause({length:15});
     // twiml.say('Please wait while we search for your answer');
@@ -264,19 +267,12 @@ app.post('/gkCompleted/:categoryId', function (req, res) {
 
 
 
-    const gatherNode = twiml.gather({
-      numDigits: 1
-    });
-
-    function sayAnswer(answer){
-      console.log(answer);
-      gatherNode.say(answer);
-    }
-    console.log("Answer outside = ",answer);
-    gatherNode.say(answer);
-    gatherNode.say('Press 1 and ask the next question or press 9 to disconnect the call');
-    twiml.redirect('/gkDisconnect/' + categoryId );
-    
+    // const gatherNode = twiml.gather({
+    //   numDigits: 1
+    // });
+    // gatherNode.say('Press 1 and ask the next question or press 9 to disconnect the call');
+    // twiml.redirect('/gkDisconnect/' + categoryId);
+    twiml.pause({length: 15});
   }
 
   res.type('text/xml');
@@ -360,8 +356,8 @@ app.post('*', function (req, res) {
 })
 
 // Create an HTTP server and listen for requests on port 1337
-console.log('Twilio Client app HTTP server running at http://127.0.0.1:1337');
-app.listen(1337);
+console.log('Twilio Client app HTTP server running at http://127.0.0.1:1338');
+app.listen(1338);
 
 
 
