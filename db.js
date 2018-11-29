@@ -30,7 +30,7 @@ exports.testPython = function(question) {
 exports.getGkQuestionAnswer = function(question, context, type = 2) {
     let params = { "context": context, "question": question, "type": type };
     var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
-    // console.log(response);
+    console.log(params);
     return (JSON.parse(response.body).answer);
 }
 

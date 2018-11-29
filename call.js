@@ -236,7 +236,7 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
         answer = db.getGkQuestionAnswer(speechResult, context, 2)
         console.log(answer);
         // twiml.say('The answer is ' + answer.toString());
-        twiml.redirect('/sayGkAnswer/' + encodeURI(answer));
+        twiml.redirect('/sayGkAnswer/'+categoryId+'/' + encodeURI(answer));
 
         // twiml.play({
         //   loop: 1
@@ -255,12 +255,13 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
 });
 
 
-app.post('/sayGkAnswer/:answer', function(req, res) {
+app.post('/sayGkAnswer/:categoryId/:answer', function(req, res) {
     const twiml = new VoiceResponse();
-    answer = decodeURI(req.params.answer);
+    const categoryId = req.params.categoryId;
+    const answer = decodeURI(req.params.answer);
     console.log("Answer is " + answer);
     twiml.say('The answer is ' + answer.toString());
-    twiml.redirect('/gkDisconnect/2');
+    twiml.redirect('/gkDisconnect/' + categoryId);
     res.type('text/xml');
     res.send(twiml.toString());
 })
