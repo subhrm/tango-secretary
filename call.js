@@ -275,7 +275,7 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
         // });
         // gatherNode.say('Press 1 and ask the next question or press 9 to disconnect the call');
         // twiml.redirect('/gkDisconnect/' + categoryId);
-        twiml.pause({ length: 15 });
+        twiml.pause({ length: 2 });
     }
 
     res.type('text/xml');
