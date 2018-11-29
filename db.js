@@ -26,6 +26,14 @@ exports.testPython = function(question) {
     return (JSON.parse(response.body).answer);
 }
 
+
+exports.getGkQuestionAnswer = function(question, context, type = 2) {
+    let params = { "context": context, "question": question, "type": type };
+    var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
+    // console.log(response);
+    return (JSON.parse(response.body).answer);
+}
+
 exports.getAnswerDirectly = function(question, context, twiml, type = 2) {
     let params = { "context": context, "question": question, "type": type };
     return new Promise(function(resolve, reject) {
@@ -34,6 +42,7 @@ exports.getAnswerDirectly = function(question, context, twiml, type = 2) {
             "url": "http://35.231.2.181:8000/api/qa",
             "body": JSON.stringify(params)
         }, function(error, response, body) {
+
             if (error) return reject(error);
             try {
                 // JSON.parse() can throw an exception if not valid JSON

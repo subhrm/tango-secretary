@@ -246,12 +246,11 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
         // console.log(token);
         // console.log('Sleep Start');
         let answer = "";
-        db.getAnswerDirectly(speechResult, context, 2).then(res => {
-            // answer = res;
-            console.log(res);
-            res.say('working');
-            res.redirect('/gkDisconnect/' + categoryId);
-        });
+
+        answer = db.getGkQuestionAnswer(speechResult, context, 2)
+        console.log(answer);
+        res.say('The answer is ' + answer.toString());
+        res.redirect('/gkDisconnect/' + categoryId);
 
         // twiml.play({
         //   loop: 1
