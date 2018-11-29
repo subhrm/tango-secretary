@@ -260,7 +260,7 @@ app.post('/sayGkAnswer/:answer', function(req, res) {
     answer = decodeURI(req.params.answer);
     console.log("Answer is " + answer);
     twiml.say('The answer is ' + answer.toString());
-    twiml.redirect('/gkDisconnect/' + categoryId);
+    twiml.redirect('/gkDisconnect/2');
     res.type('text/xml');
     res.send(twiml.toString());
 })
