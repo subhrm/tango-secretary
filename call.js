@@ -249,7 +249,7 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
 
         answer = db.getGkQuestionAnswer(speechResult, context, 2)
         console.log(answer);
-        res.say('The answer is ' + answer.toString());
+        twiml.say('The answer is ' + answer.toString());
         res.redirect('/gkDisconnect/' + categoryId);
 
         // twiml.play({
