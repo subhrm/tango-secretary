@@ -16,7 +16,7 @@ exports.answerQuestion = function(question, context, userObj, type=1) {
     var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
     console.log(params);
     // console.log(response);
-    return (JSON.parse(response.body).answer);
+    return (JSON.parse(response.body));
     // return 'You have 5 leaves';
 }
 

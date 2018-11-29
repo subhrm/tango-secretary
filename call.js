@@ -100,11 +100,12 @@ app.post('/lmsCompleted', function(req, res) {
     const speechResult = req.body.SpeechResult;
     console.log(speechResult, req.body.Confidence);
     if (req.body.SpeechResult) {
-        const answer = db.answerQuestion(speechResult, userObj.context, userObj, 1)
-        twiml.say(answer);
+        const mlResponse = db.answerQuestion(speechResult, userObj.context, userObj, 1)
+        twiml.say(mlResponse.answer);
         twiml.pause({
             length: 2
         });
+        userObj = mlResponse.userObj;
         console.log(req.body.SpeechResult);
         twiml.redirect('/lmsDisconnect');
     }
