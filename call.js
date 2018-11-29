@@ -9,32 +9,31 @@ const app = express();
 app.use(urlencoded({
     extended: false
 }));
+var userObj;
 
-/*
-    Main entry point 
- */
+/* Main entry point */
 app.post('/voice', (req, res) => {
     const twiml = new VoiceResponse();
-
     function gatherHarmonyId() {
         const gatherNode = twiml.gather({
             numDigits: 4
         });
-        gatherNode.say('Please enter your 4 digit harmony id.');
+        gatherNode.say('Please enter your 4 digit harmony PIN.');
         // Please enter your 4 digit harmony id.
         twiml.redirect('/voice');
     }
 
     if (req.body.Digits) {
         const userId = req.body.Digits;
-        const user = db.validateUser(userId);
+        const userResp = db.validateUser(userId);
 
-        console.log(userId);
-        if (user) {
-            twiml.say(`Welcome ${user}`);
+        console.log(userResp);
+        if (userResp.status_code == 200) {
+            userObj = userResp;
+            twiml.say(`Welcome ${userObj.employee_detail.emp_name}`);
             twiml.redirect('/gatherChoice');
         } else {
-            twiml.say('Invalid Pin');
+            twiml.say('Invalid Pin... Trespassers will be Prosecuted');
             gatherHarmonyId();
         }
     } else {
@@ -63,7 +62,6 @@ app.post('/gatherChoice', function(req, res) {
             case '1':
                 twiml.say('Please ask questions related to your leaves!');
                 twiml.redirect('/lmsQuestion')
-                    // twiml.say('Welcome to leave management!');
                 break;
             case '2':
                 twiml.redirect('/gkOptions');
@@ -99,10 +97,10 @@ app.post('/lmsQuestion', function(req, res) {
 
 app.post('/lmsCompleted', function(req, res) {
     const twiml = new VoiceResponse();
-    // console.log(req.body);
     const speechResult = req.body.SpeechResult;
+    console.log(speechResult, req.body.Confidence);
     if (req.body.SpeechResult) {
-        const answer = db.answerQuestion(speechResult)
+        const answer = db.answerQuestion(speechResult, userObj.context, userObj, 1)
         twiml.say(answer);
         twiml.pause({
             length: 2
@@ -137,7 +135,6 @@ app.post('/lmsDisconnect', function(req, res) {
                 break;
             case '9':
                 twiml.redirect('/goodbye')
-                    // twiml.say('Welcome to leave management!');
                 break;
             default:
                 twiml.say("Sorry, I don't understand that choice.");

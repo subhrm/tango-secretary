@@ -1,14 +1,33 @@
 var Request = require("request");
 var request = require('sync-request');
-url = 'http://35.231.2.181:8080/api/qa';
+mlUrl = 'http://35.231.2.181:8000/api/qa';
+lmsDbUrl = 'https://22a47058.ngrok.io'
 
-exports.validateUser = function(userId) {
-    return 'TATA';
+/* Working for User Validation Module */
+exports.validateUser = function(harmonyId) {
+    var response = request('GET', lmsDbUrl + '/validateUser?harmonyId='+harmonyId);
+    // console.log(JSON.parse(response.body));
+    return (JSON.parse(response.body));
 }
 
-exports.answerQuestion = function(question) {
-    return 'You have 5 leaves';
+/* Working for LMS Module */
+exports.answerQuestion = function(question, context, userObj, type=1) {
+    let params = { "question": question, "context": context, "type": type, "userObj": userObj };
+    var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
+    console.log(params);
+    // console.log(response);
+    return (JSON.parse(response.body).answer);
+    // return 'You have 5 leaves';
 }
+
+/* Working for GK Module */
+exports.getGkQuestionAnswer = function(question, context, type = 2) {
+    let params = { "context": context, "question": question, "type": type };
+    var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
+    console.log(params);
+    return (JSON.parse(response.body).answer);
+}
+
 exports.getGkQuestionToken = function(question, context, type = 2) {
     let params = { "context": context, "question": question, "type": type };
     var response = request('POST', 'http://35.231.2.181:8000/api/post-question', { json: params });
@@ -20,19 +39,6 @@ exports.getAnswer = function(token) {
     return (JSON.parse(response.body).answer);
 }
 
-exports.testPython = function(question) {
-    var response = request('POST', 'http://35.231.2.181:8080/api/qa');
-    // console.log("Status Code (function) : "+response);
-    return (JSON.parse(response.body).answer);
-}
-
-
-exports.getGkQuestionAnswer = function(question, context, type = 2) {
-    let params = { "context": context, "question": question, "type": type };
-    var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
-    console.log(params);
-    return (JSON.parse(response.body).answer);
-}
 
 exports.getAnswerDirectly = function(question, context, twiml, type = 2) {
     let params = { "context": context, "question": question, "type": type };
