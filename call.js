@@ -235,7 +235,7 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
     if (speechResult) {
         // twiml.pause({length:15});
         console.log('Test');
-        twiml.say('Please wait while we search for your answer');
+        // twiml.say('Please wait while we search for your answer');
         let context;
         if (categoryId == 1) {
             context = 'Narayana Murthy'
@@ -255,19 +255,6 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
         // twiml.play({
         //   loop: 1
         // }, 'https://api.twilio.com/cowbell.mp3');
-
-
-        // let answer = db.getAnswer(token);
-        // twiml.say(answer);
-        // console.log("answer: "+answer);
-        // twiml.say('Woke Up');
-        // twiml.pause({length:15});
-        // twiml.say('Please wait while we search for your answer');
-        // twiml.play()
-        // twiml.redirect('/gkIntercept/'+categoryId);
-        // twiml.say();
-
-
 
         // const gatherNode = twiml.gather({
         //   numDigits: 1
