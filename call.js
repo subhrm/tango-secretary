@@ -10,6 +10,9 @@ app.use(urlencoded({
     extended: false
 }));
 
+/*
+    Main entry point 
+ */
 app.post('/voice', (req, res) => {
     const twiml = new VoiceResponse();
 
@@ -22,30 +25,14 @@ app.post('/voice', (req, res) => {
         twiml.redirect('/voice');
     }
 
-    function say(text) {
-
-    }
     if (req.body.Digits) {
         const userId = req.body.Digits;
         const user = db.validateUser(userId);
 
         console.log(userId);
         if (user) {
-            // twiml.pause({length: 1});
-            // twi
-            // db.testPython('test').then(function(val){
             twiml.say(`Welcome ${user}`);
-            // const answer = db.testPython('test');
-            // console.log(answer);
-            // twiml.say(val.answer);
-            // twiml.say(answer)
             twiml.redirect('/gatherChoice');
-            // });
-            // twiml.redirect('/gatherChoice');
-            // const testPython = db.testPython('test');
-            // console.log(typeof testPython);
-            // twiml.say(testPython);
-
         } else {
             twiml.say('Invalid Pin');
             gatherHarmonyId();
@@ -56,6 +43,7 @@ app.post('/voice', (req, res) => {
     res.type('text/xml');
     res.send(twiml.toString());
 });
+
 
 app.post('/gatherChoice', function(req, res) {
     const twiml = new VoiceResponse();
@@ -221,7 +209,7 @@ app.post('/gkSpeech/:categoryId', function(req, res) {
     res.type('text/xml');
     res.send(twiml.toString());
 });
-var token;
+
 app.post('/gkCompleted/:categoryId', function(req, res) {
     const twiml = new VoiceResponse();
     const categoryId = req.params.categoryId;
@@ -242,15 +230,13 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
         } else {
             context = 'Bhubaneswar'
         }
-        // token = db.getGkQuestionToken(speechResult, context, 2);
-        // console.log(token);
-        // console.log('Sleep Start');
+
         let answer = "";
 
         answer = db.getGkQuestionAnswer(speechResult, context, 2)
         console.log(answer);
         twiml.say('The answer is ' + answer.toString());
-        res.redirect('/gkDisconnect/' + categoryId);
+        res.redirect('/sayGkAnswer/' + encodeURI(answer));
 
         // twiml.play({
         //   loop: 1
@@ -261,12 +247,21 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
         // });
         // gatherNode.say('Press 1 and ask the next question or press 9 to disconnect the call');
         // twiml.redirect('/gkDisconnect/' + categoryId);
-        twiml.pause({ length: 2 });
+        // twiml.pause({ length: 2 });
     }
 
     res.type('text/xml');
     res.send(twiml.toString());
 });
+
+
+app.post('/sayGkAnswer/:answer', function(req, res) {
+    console.log("Answer is " + decodeURI(answer));
+    twiml.say('The answer is ' + decodeURI(answer).toString());
+    res.redirect('/gkDisconnect/' + categoryId);
+    res.type('text/xml');
+    res.send(twiml.toString());
+})
 
 app.post('/gkIntercept/:categoryId', function(req, res) {
     const twiml = new VoiceResponse();
