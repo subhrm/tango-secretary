@@ -257,9 +257,10 @@ app.post('/gkCompleted/:categoryId', function(req, res) {
 
 app.post('/sayGkAnswer/:answer', function(req, res) {
     const twiml = new VoiceResponse();
-    console.log("Answer is " + decodeURI(answer));
-    twiml.say('The answer is ' + decodeURI(answer).toString());
-    res.redirect('/gkDisconnect/' + categoryId);
+    answer = decodeURI(req.params.answer);
+    console.log("Answer is " + answer);
+    twiml.say('The answer is ' + answer.toString());
+    twiml.redirect('/gkDisconnect/' + categoryId);
     res.type('text/xml');
     res.send(twiml.toString());
 })
