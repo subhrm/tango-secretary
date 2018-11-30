@@ -1,7 +1,8 @@
 var Request = require("request");
 var request = require('sync-request');
-mlUrl = 'http://35.231.2.181:8000/api/qa';
-lmsDbUrl = 'https://22a47058.ngrok.io'
+mlUrl = 'http://35.243.243.141:8000/api';
+lmsDbUrl = 'http://127.0.0.1:3000';
+// lmsDbUrl = 'https://f508ce81.ngrok.io'
 
 /* Working for User Validation Module */
 exports.validateUser = function(harmonyId) {
@@ -13,7 +14,7 @@ exports.validateUser = function(harmonyId) {
 /* Working for LMS Module */
 exports.answerQuestion = function(question, context, userObj, type=1) {
     let params = { "question": question, "context": context, "type": type, "userObj": userObj };
-    var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
+    var response = request('POST', mlUrl + '/lms_driver', { json: params });
     console.log(params);
     // console.log(response);
     return (JSON.parse(response.body));
@@ -23,7 +24,7 @@ exports.answerQuestion = function(question, context, userObj, type=1) {
 /* Working for GK Module */
 exports.getGkQuestionAnswer = function(question, context, type = 2) {
     let params = { "context": context, "question": question, "type": type };
-    var response = request('POST', 'http://35.231.2.181:8000/api/qa', { json: params });
+    var response = request('POST', mlUrl + '/qa', { json: params });
     console.log(params);
     return (JSON.parse(response.body).answer);
 }
