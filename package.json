@@ -4,7 +4,8 @@
   "description": "This module acts a middleware between the end user and the ML service. It routes the call details to the tango-driver and returns the response to the end user, hence the name.",
   "main": "call.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node call.js"
   },
   "repository": {
     "type": "git",
