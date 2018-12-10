@@ -356,6 +356,13 @@ app.post('*', function(req, res) {
     res.send(twiml.toString());
 })
 
+app.get('*', function(req, res) {
+    const twiml = new VoiceResponse();
+    twiml.redirect('/voice');
+    res.type('text/xml');
+    res.send(twiml.toString());
+})
+
 app.get("/status", function(req, res) {
     res.type('text')
     res.send("Hello I am up and running !")
